@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  title: Social app - Hrishikesh Shinde
+  description: This is a basic social app.
+  version: 1.0.1
+
+servers:
+  - url: http://localhost:4000/api/v1
+    description: This is the main url of the social app.
+  - url: https://localhost:4000/api/v1
+    description: This is a dummy url this doesn't work.
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+paths:
+  /instagram:
+    get:
+      summary: This path returns followers, following from instagram and the date and time when the request was made.
+      responses:
+        "200": #status code
+          description: This is a success and we will return an object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  followers:
+                    type: string
+                  follows:
+                    type: string
+
+  /facebook:
+    get:
+      summary: This path returns followers, following from facebook and the date and time when the request was made.
+      responses:
+        "200": #status code
+          description: This is a success and we will return an object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  followers:
+                    type: string
+                  follows:
+                    type: string
+
+  /linkedin:
+    get:
+      summary: This path returns followers, following from linkedin and the date and time when the request was made.
+      responses:
+        "200": #status code
+          description: This is a success and we will return an object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  followers:
+                    type: string
+                  follows:
+                    type: string
+
+  /{token}:
+    get:
+      summary: Returns whatever is there in the parameter.
+      parameters:
+        - name: token
+          default: 4
+          in: path
+          schema:
+            type: string
+      responses:
+        "200": #status code
+          description: This is a success and we will return a string.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  params:
+                    type: string

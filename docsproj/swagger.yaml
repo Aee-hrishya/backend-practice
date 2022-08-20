@@ -1,0 +1,221 @@
+openapi: 3.0.0 #The version we are using for writing the docs.
+info:
+  title: Learn express and swagger - Hrishikesh Shinde
+  description: About writing docs.
+  version: 1.1.0
+  contact:
+    email: hrishikesh.shinde1607@gmail.com
+    url: "https://hrishi.dev"
+
+servers:
+  - url: "{protocol}://localhost:4000/api/{version}" #We can create dynammic routes like this.
+    description: For local host
+    variables: #We can declare variables like this.
+      version:
+        enum:
+          - v1
+          - v2
+        default: v1 #We set the default version here that we want to display when we first go to the docs section.
+      protocol:
+        enum:
+          - http
+          - https
+        default: http #Default protocol we want to set when we go to the docs section.
+
+components:
+  securitySchemes:
+    #We are basically defining what authentication we are using.
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+paths:
+  /products:
+    get:
+      tags:
+        - String
+      summary: This tells whether the products are retrieved or not.
+      responses:
+        200:
+          description: Everything is good no issue.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "myString"
+        400:
+          description: Something is wrong.
+
+  /productsobject:
+    get:
+      tags:
+        - Object
+      summary: This returns a single object which consists of producs.
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  company:
+                    type: string
+                example:
+                  id: 12
+                  name: something
+                  company: oneplus
+
+  /productarray:
+    get:
+      tags:
+        - Arrays
+      summary: This returns an array of products.
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: array
+                items: object #we have to add this line when working with arrays. for objects we can simply put type: object.
+                properties:
+                  - id:
+                      type: number
+                    name:
+                      type: string
+                    company:
+                      type: string
+                example:
+                  - id: 12
+                    name: something
+                    company: oneplus
+        400:
+          description: Bad request
+
+  /myproduct/{productId}:
+    get:
+      tags:
+        - String
+      summary: This path returns the course whose id matches to the param in the url.
+      # As we are getting the "courseId" dynammically from the path we need to specify the parameters.
+      parameters:
+        - name: productId
+          in: path
+          default: 12
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  company:
+                    type: string
+
+  /addProduct:
+    post:
+      summary: We add a product to the products array using this path.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                name:
+                  type: string
+                company:
+                  type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  company:
+                    type: string
+        400:
+          description: Bad request
+
+  /productquery:
+    get:
+      tags:
+        - Object
+      summary: Here we pass a query and get the desired response.
+      parameters:
+        - name: location
+          required: true
+          in: query
+          schema:
+            type: string
+            enum:
+              - Mumbai
+              - Delhi
+              - Pune
+        - name: device
+          required: true
+          in: query
+          schema:
+            type: string
+            enum:
+              - Web
+              - Mobile
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  location:
+                    type: string
+                  device:
+                    type: string
+
+  /productupload:
+    post:
+      tags:
+        - images
+      summary: Using this route the user can upload the photo of the products.
+      parameters:
+        - in: header
+          name: auth
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: All good success.
+        400:
+          description: Bad request.

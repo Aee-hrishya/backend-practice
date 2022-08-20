@@ -1,0 +1,2 @@
+Why do we create tokens?
+It enables users to verify their identity to websites, which then generates a unique encrypted authentication token. That token provides users with access to protected pages and resources for a limited period of time without having to re-enter their username and password.
