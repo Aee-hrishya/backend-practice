@@ -7,7 +7,7 @@ const { MONGO_URL } = process.env;
 exports.connect = () => {
   mongoose
     .connect(MONGO_URL, {
-      useNewUrlParser: true, //As mongodb has changes its parser this tells node to use the latest parser and if any problem is found then switch to the old parser.
+      useNewUrlParser: true, //As mongodb has changed its parser this tells node to use the latest parser and if any problem is found then switch to the old parser.
       useUnifiedTopology: true,
     })
     .then(console.log("DB connected successfully!"))
