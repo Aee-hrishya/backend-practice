@@ -36,7 +36,7 @@ app.post("/register", async (req, res) => {
     //Encrypting the password using the bcrypt.js package.
     const encryptedPass = await bcrypt.hash(password, 10); //10 here means that we can go through 10 rounds for hashing the password. which is usually a good number for hashing the passwords.
 
-    // Using the model we have created now we create and actual user with its schema.
+    // Using the model we have created now we create an actual user with its schema.
     const myUser = await user.create({
       firstname,
       lastname,
@@ -53,7 +53,7 @@ app.post("/register", async (req, res) => {
       },
       process.env.SECRET_KEY, //The secret key for the token
 
-      //This tell in how much time do we need to expire the token.
+      //This tells in how much time do we need to expire the token.
       {
         expiresIn: "2h",
       }
