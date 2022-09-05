@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs"); //bcrypt helps us encrypt the passwords that
 const jwt = require("jsonwebtoken"); //importing the jsonwebtoken package for generating the tokens.
 const user = require("./model/user"); //importing the database model.
 const connection = require("./config/database"); //Getting the database connection.
+const auth = require("./middleware/auth"); //Here we import the custom middleware we have created.
 
 connection.connect(); //executing the connect() method which establishes the connection.
 
@@ -107,6 +108,11 @@ app.post("/login", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+//We can use the middleware auth here to check if the user is authorized or not. In this way we can protect routes and can only let specific users access certain routes.
+app.get("/dashboard", auth, (req, res) => {
+  res.status(200).send("Welcome authorized user!");
 });
 
 module.exports = app; //exporting the entire module named app.
