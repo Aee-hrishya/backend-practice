@@ -4,12 +4,14 @@ const jwt = require("jsonwebtoken"); //importing the jsonwebtoken package for ge
 const user = require("./model/user"); //importing the database model.
 const connection = require("./config/database"); //Getting the database connection.
 const auth = require("./middleware/auth"); //Here we import the custom middleware we have created.
+const cookieParser = require("cookie-parser"); //We need to import this package so that we can send responses in the form of cookies.
 
 connection.connect(); //executing the connect() method which establishes the connection.
 
 //creating an express app
 const app = express();
 app.use(express.json()); //As express cannot handle json data we need to use this middleware for it.
+app.use(cookieParser()); //we have to use the cookie parser middleware as cookies are not handled by the express yet.
 
 app.get("/", (req, res) => {
   res.send("<h1>Hello everyone</h1>");
@@ -97,7 +99,18 @@ app.post("/login", async (req, res) => {
       userExists.token = token; //set the created token to the token of the user.
       userExists.password = undefined; //set the password to undefined as you don't want to show the password to the user.
 
-      res.status(200).json(userExists);
+      // res.status(200).json(userExists);
+
+      //If I dont want to send the response in json but want to send it in the form of cookies then we can do the following thing.
+      const options = {
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), //format for the date days*hours*minutes*seconds*1000
+        httpOnly: true, //this means that the cookie will only be readable by the backend server and not anyone else.
+      };
+
+      //Here we send the cookie the first parameter is token as we are expecting cookie.token in the auth middleware. the second token is the value of the token which we have created earlier. The last parameter is the options that we have set for the cookies. If certain systems can't handle the cookie then we send them the json as well.
+      res.status(200).cookie("token", token, options).json({
+        success: true,
+      });
     } else {
       res
         .status(400)
