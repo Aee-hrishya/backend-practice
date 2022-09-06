@@ -76,7 +76,7 @@ app.post("/register", async (req, res) => {
 //Route when the user tries to login.
 app.post("/login", async (req, res) => {
   try {
-    //As the user is login in we will only receive the email and the password of the user.
+    //As the user is loging in we will only receive the email and the password of the user.
     const { email, password } = req.body;
 
     //if email and the password is not filled then we pop the below message.
