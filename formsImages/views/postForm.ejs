@@ -16,7 +16,8 @@
   <body class="bg-dark text-white">
     <div class="container">
       <h1 class="display-3">POST form</h1>
-      <form>
+      <!-- We need to give the enctype as multipart/form-data when working with files or files won't get uploaded. Also the this enctype attribute only works with POST method. -->
+      <form method="POST" action="/mypost" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="Firstname" class="form-label">Firstname</label>
           <input
@@ -24,11 +25,26 @@
             class="form-control"
             id="Firstname"
             aria-describedby="emailHelp"
+            name="firstname"
           />
         </div>
         <div class="mb-3">
           <label for="Lastname" class="form-label">Lastname</label>
-          <input type="text" class="form-control" id="Lastname" />
+          <input
+            type="text"
+            class="form-control"
+            id="Lastname"
+            name="lastname"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="samplefile" class="form-label">File</label>
+          <input
+            type="file"
+            class="form-control"
+            id="samplefile"
+            name="samplefile"
+          />
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
